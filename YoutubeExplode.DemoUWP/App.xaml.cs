@@ -5,8 +5,11 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -17,19 +20,20 @@ using Windows.UI.Xaml.Navigation;
 
 namespace YoutubeExplode.DemoUWP
 {
-    /// <summary>
-    /// 기본 애플리케이션 클래스를 보완하는 애플리케이션별 동작을 제공합니다.
-    /// </summary>
     sealed partial class App : Application
     {
-        /// <summary>
-        /// Singleton 애플리케이션 개체를 초기화합니다. 이것은 실행되는 작성 코드의 첫 번째
-        /// 줄이며 따라서 main() 또는 WinMain()과 논리적으로 동일합니다.
-        /// </summary>
         public App()
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+        }
+
+        private void ExtendAcrylicIntoTitleBar()
+        {
+            CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.ButtonBackgroundColor = Colors.Transparent;
+            titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
         }
 
         /// <summary>
@@ -71,6 +75,10 @@ namespace YoutubeExplode.DemoUWP
                 // 현재 창이 활성 창인지 확인
                 Window.Current.Activate();
             }
+
+            //타이틀 투명하게 처리
+            //ref. https://medium.com/windows-developer/build-this-app-using-fluent-design-b9dafbdc7267
+            this.ExtendAcrylicIntoTitleBar();
         }
 
         /// <summary>
